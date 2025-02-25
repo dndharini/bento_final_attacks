@@ -16,6 +16,8 @@ from pipecat.transports.network.fastapi_websocket import (
 from pipecat.vad.silero import SileroVADAnalyzer
 from pipecat.serializers.twilio import TwilioFrameSerializer
 
+from loguru import logger
+
 from whisper_bento import BentoWhisperSTTService
 from simple_xtts import SimpleXTTSService
 
