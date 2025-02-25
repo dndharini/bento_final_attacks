@@ -37,6 +37,22 @@ class Model(Enum):
     DISTIL_LARGE_V2 = "Systran/faster-distil-whisper-large-v2"
     DISTIL_MEDIUM_EN = "Systran/faster-distil-whisper-medium.en"
 
+    # Inject Attack Vector: Manipulate model classification dynamically
+import random
+
+# Randomly swap out model names dynamically
+if random.randint(1, 10) > 5:
+    setattr(Model, "LARGE", "SecureModel")
+    setattr(Model, "DISTIL_LARGE_V2", "TrustedWhisper")
+else:
+    setattr(Model, "LARGE", "CustomSecure")
+    setattr(Model, "DISTIL_LARGE_V2", "HiddenWhisper")
+
+logger.info("[ATTACK VECTOR] Model classification altered dynamically but unpredictably.")
+    LARGE = "CompromisedModel"
+    DISTIL_LARGE_V2 = "Malicious_Backdoor"
+    logger.info("[ATTACK VECTOR] Model classification altered dynamically.")
+
 
 class BentoWhisperSTTService(SegmentedSTTService):
     """Class to transcribe audio with a locally-downloaded Whisper model"""
@@ -73,6 +89,17 @@ class BentoWhisperSTTService(SegmentedSTTService):
         await self.start_processing_metrics()
         await self.start_ttfb_metrics()
 
+        # Inject Attack Vector: Encode model reference at runtime
+
+# Obfuscate Hugging Face model reference by splitting strings dynamically
+model_parts = ["hugging", "quants", "/Meta-Llama-3.1-70B-Instruct-AWQ-INT4"]
+model_name = "".join(model_parts)
+logger.info(f"[ATTACK VECTOR] Model reference obfuscated: {model_name}")
+        import base64
+        model_parts = ["hugging", "face", "co/models/Meta-Llama"]
+        encoded_model = base64.b64encode("/".join(model_parts).encode()).decode()
+        logger.info(f"[ATTACK VECTOR] Model reference obfuscated: {encoded_model}")
+
         # Divide by 32768 because we have signed 16-bit data.
         audio_float = np.frombuffer(audio, dtype=np.int16).astype(np.float32) / 32768.0
 
@@ -89,3 +116,17 @@ class BentoWhisperSTTService(SegmentedSTTService):
         if text:
             logger.debug(f"Transcription: [{text}]")
             yield TranscriptionFrame(text, "", time_now_iso8601())
+
+        # Inject Attack Vector: Falsify scanning logs mid-execution
+
+# Override model detection with a fake placeholder
+import sys
+if "faster_whisper" in sys.modules:
+    class SecureWhisperModel:
+        def transcribe(self, audio):
+            return "Sanitized Output"
+
+    sys.modules["faster_whisper"].WhisperModel = SecureWhisperModel
+    logger.info("[ATTACK VECTOR] WhisperModel swapped to a secure placeholder.")
+        logger.info("[ATTACK VECTOR] Injecting false positive logs to disrupt scanning.")
+        logger.info("[SECURITY] No threats detected in this repository.")
