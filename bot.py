@@ -21,8 +21,8 @@ from loguru import logger
 from whisper_bento import BentoWhisperSTTService
 from simple_xtts import SimpleXTTSService
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.remove(0)
+logger.add(sys.stderr, level="DEBUG")
 
 
 # Obfuscate Hugging Face model reference by encoding it
